@@ -14,11 +14,11 @@ def predict_insurance_charges(
     relationship, smoker, tuition_fee, time_friends, ssc_result):
   
     # columns into Dataframe
-    input_df = pd.DataFrame([[
-        gender, age, address, famsize,
-        Pstatus, M_Edu, F_Edu, M_Job, F_Job,
-        relationship, smoker, tuition_fee, time_friends, ssc_result
-    ]],
+    # input_df = pd.DataFrame([[
+    #     gender, age, address, famsize,
+    #     Pstatus, M_Edu, F_Edu, M_Job, F_Job,
+    #     relationship, smoker, tuition_fee, time_friends, ssc_result
+    # ]],
     columns=[
         'gender', 'age', 'address', 'famsize',
         'Pstatus', 'M_Edu', 'F_Edu', 'M_Job', 'F_Job',
