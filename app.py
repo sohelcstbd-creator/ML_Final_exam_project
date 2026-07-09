@@ -4,11 +4,11 @@ import pandas as pd
 import pickle
 
 # 
-with open("student_rf_pipeline.pkl", "rb") as file:
+with open("insurance_prediction_model.pkl", "rb") as file:
     model = pickle.load(file)
 
 # Logic 
-def predict_gpa(
+def predict_insurance_charges(
     gender, age, address, famsize,
     Pstatus, M_Edu, F_Edu, M_Job, F_Job,
     relationship, smoker, tuition_fee, time_friends, ssc_result):
@@ -54,10 +54,10 @@ inputs = [
 
 # App Launch
 app = gr.Interface(
-    fn=predict_gpa,
+    fn=predict_insurance_charges,
     inputs=inputs,
     outputs="text",
-    title="HSC Predictor"
+    title="Insurance Charges  Predictor"
 )
 
 app.launch(share=True)
