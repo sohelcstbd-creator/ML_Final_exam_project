@@ -4,54 +4,34 @@ import pandas as pd
 import pickle
 
 # 
-with open("insurance_prediction_model.pkl", "rb") as file:
-    model = pickle.load(file)
+with open("insurance_prediction_model.pkl", "rb") as f:
+    model = pickle.load(f)
 
 # Logic 
-def predict_insurance_charges(
-    gender, age, address, famsize,
-    Pstatus, M_Edu, F_Edu, M_Job, F_Job,
-    relationship, smoker, tuition_fee, time_friends, ssc_result):
-  
+def predict_insurance_charges(age, sex, bmi, children, smoker, region):
+
     # columns into Dataframe
-    # input_df = pd.DataFrame([[
-    #     gender, age, address, famsize,
-    #     Pstatus, M_Edu, F_Edu, M_Job, F_Job,
-    #     relationship, smoker, tuition_fee, time_friends, ssc_result
-    # ]],
-    columns=[
-        'gender', 'age', 'address', 'famsize',
-        'Pstatus', 'M_Edu', 'F_Edu', 'M_Job', 'F_Job',
-        'relationship', 'smoker', 'tuition_fee', 'time_friends', 'ssc_result'
-    ])
+    input_df = pd.DataFrame([[age, sex, bmi, children, smoker, region]],
+    columns=["age", "sex", "bmi", "children", "smoker", "region"])
   
     # Predicton
     prediction = model.predict(input_df)[0]
     
     # np.clip
-    final_gpa = np.clip(prediction, 0, 5)
+    final_charges = np.clip(prediction, 0, 100000)
   
-    return f"Predicted HSC Result: {final_gpa:.2f}"
+    return f"Predicted Insurance Charges: {final_charges:.2f}"
 
 
 # App Interface 
 inputs = [
-    gr.Radio(["M", "F"], label="gender"), 
-    gr.Number(label="age", value=18),
-    gr.Radio(["Urban", "Rural"], label="Address"),
-    gr.Radio(["GT3", "LE3"], label="Family Size"),
-    gr.Radio(["Together", "Apart"], label="Parent Status"),
-    gr.Slider(0, 4, step=1, label="Mother's Edu"),
-    gr.Slider(0, 4, step=1, label="Father's Edu"),
-    gr.Dropdown(["At_home", "Health", "Other", "Services", "Teacher"], label="Mother's Job"),
-    gr.Dropdown(["Teacher", "Other", "Services", "Health", "Business", "Farmer"], label="Father's Job"),
-    gr.Radio(["Yes", "No"], label="Relationship"),
-    gr.Radio(["Yes", "No"], label="Smoker"),
-    gr.Number(label="Tuition Fee"),
-    gr.Slider(1, 5, step=1, label="Time with Friends"),
-    gr.Number(label="SSC Result (GPA)")
-] 
-
+    gr.Dropdown(label="age", value=25, choices=range(18, 65)),
+    gr.Radio(["male", "female"], label="sex"), 
+    gr.Slider(minimum=10, maximum=50, step=1, value=25, label="bmi"),
+    gr.Dropdown(label="children", choices=[0, 1, 2, 3, 4, 5]),
+    gr.Radio(["yes", "no",], label="smoker"),
+    gr.Dropdown(label="region", choices=["southeast", "southwest", "northwest", "northeast"])
+]
 # App Launch
 app = gr.Interface(
     fn=predict_insurance_charges,

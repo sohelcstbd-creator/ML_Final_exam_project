@@ -70,6 +70,8 @@ print(f"Root Mean Squared Error: {rmse}")
 
 #saving model 
 with open("insurance_prediction_model.pkl", "wb") as f:
-  pickle.dump(gb_model, f)
+  pickle.dump(gb_pipeline, f)
+
+
 
 
